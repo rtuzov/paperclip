@@ -92,14 +92,6 @@ plan collaboration mode is a prompt and does not block writes or commands.
 Inside a container without network-namespace rights, that profile's helper can
 fail thread creation (`bwrap: loopback: Failed RTM_NEWADDR`); the run then ends
 as a provider startup failure with Retry (see `durable-recovery.md`).
-That failure is a property of the container, not of one sandbox host: in Codex
-0.160 the filesystem helper that loads `AGENTS.md` always runs with a
-restricted network policy (`exec-server/src/fs_sandbox.rs`), so bubblewrap
-always unshares the network and configures loopback, whatever the profile's
-`network.enabled` says. Codex's legacy Landlock mode refuses any
-filesystem-restricted policy. A fresh sandbox from the same image fails the
-same way, and Retry does too, until Planning runs on such a target either drop
-Codex's own read-only enforcement or gain a verified Paperclip read-only guard.
 
 The returned sandbox facts remain authoritative. Codex 0.132.0 may inject a
 provider-managed writable root such as `~/.codex/memories` after a first run,
